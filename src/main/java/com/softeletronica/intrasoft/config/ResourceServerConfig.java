@@ -87,9 +87,6 @@ public class ResourceServerConfig {
 		return bean;
 	}
 
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+
 
 }

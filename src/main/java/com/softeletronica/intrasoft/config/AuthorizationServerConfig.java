@@ -92,7 +92,7 @@ public class AuthorizationServerConfig {
         return new InMemoryOAuth2AuthorizationConsentService();
     }
 
-    @Bean
+   @Bean
     public RegisteredClientRepository registeredClientRepository() {
         // @formatter:off
         RegisteredClient registeredClient = RegisteredClient
