@@ -4,10 +4,14 @@ package com.softeletronica.intrasoft.services;
 import com.softeletronica.intrasoft.entities.User;
 import com.softeletronica.intrasoft.services.exceptions.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Autowired
 	private UserService userService;
