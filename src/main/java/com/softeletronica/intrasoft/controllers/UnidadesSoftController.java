@@ -19,14 +19,14 @@ public class UnidadesSoftController {
     @Autowired
     private UnidadesSoftService service;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
+
     @GetMapping
     public ResponseEntity<Page<UnidadesSoftDTO>> findAll(Pageable pageable) {
         Page<UnidadesSoftDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<UnidadesSoftDTO> findById(@PathVariable Long id) {
         UnidadesSoftDTO dto = service.findById(id);
