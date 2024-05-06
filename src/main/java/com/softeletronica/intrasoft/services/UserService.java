@@ -133,6 +133,7 @@ public class UserService implements UserDetailsService {
     private void copyDtoToEntity(UserDTO dto, User entity) {
         entity.setFullName(dto.getFullName());
         entity.setEmail(dto.getEmail());
+        entity.setEmailAlternativo(dto.getEmailAlternativo());
         entity.setCreated(dto.getCreated());
         entity.setUpdated(dto.getUpdated());
         entity.setCommercialPhone(dto.getCommercialPhone());

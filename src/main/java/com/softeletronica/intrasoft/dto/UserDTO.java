@@ -7,9 +7,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UserDTO {
+    Set<RoleDTO> roles = new HashSet<>();
     private Long id;
     private String fullName;
     private String email;
+    private String emailAlternativo;
     private String commercialPhone;
     private String mobilePhone;
     private Instant created;
@@ -18,17 +20,17 @@ public class UserDTO {
     private Boolean active;
     private Long departmentId;
     private String departmentName;
-
     private String departmentImg;
-    Set<RoleDTO> roles = new HashSet<>();
+
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String fullName, String email, String commercialPhone, String mobilePhone, Instant created,
+    public UserDTO(Long id, String fullName, String email, String emailAlternativo, String commercialPhone, String mobilePhone, Instant created,
                    Instant updated, String imgUrl, Boolean active, Long departmentId, String departmentName, String departmentImg) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
+        this.emailAlternativo = emailAlternativo;
         this.commercialPhone = commercialPhone;
         this.mobilePhone = mobilePhone;
         this.created = created;
@@ -44,6 +46,7 @@ public class UserDTO {
         id = entity.getId();
         fullName = entity.getFullName();
         email = entity.getEmail();
+        emailAlternativo = entity.getEmailAlternativo();
         commercialPhone = entity.getCommercialPhone();
         mobilePhone = entity.getMobilePhone();
         created = entity.getCreated();
@@ -66,6 +69,10 @@ public class UserDTO {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getEmailAlternativo() {
+        return emailAlternativo;
     }
 
     public String getCommercialPhone() {

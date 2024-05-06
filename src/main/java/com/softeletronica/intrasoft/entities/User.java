@@ -19,6 +19,7 @@ public class User implements UserDetails {
     private Long id;
     private String fullName;
     private String email;
+    private String emailAlternativo;
     private String commercialPhone;
     private String mobilePhone;
     private String password;
@@ -41,10 +42,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String fullName, String email, String password, Instant created, Instant updated, String imgUrl, Boolean active) {
+    public User(Long id, String fullName, String email,String emailAlternativo, String password, Instant created, Instant updated, String imgUrl, Boolean active) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
+        this.emailAlternativo = emailAlternativo;
         this.password = password;
         this.created = created;
         this.updated = updated;
@@ -75,6 +77,14 @@ public class User implements UserDetails {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getEmailAlternativo() {
+        return emailAlternativo;
+    }
+
+    public void setEmailAlternativo(String emailAlternativo) {
+        this.emailAlternativo = emailAlternativo;
     }
 
     public String getCommercialPhone() {
