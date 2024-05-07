@@ -62,7 +62,7 @@ public class ResourceServerConfig {
         return jwtAuthenticationConverter;
     }
 
-    @Bean
+ /*   @Bean
     CorsConfigurationSource corsConfigurationSource() {
 
         String[] origins = corsOrigins.split(",");
@@ -76,7 +76,21 @@ public class ResourceServerConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfig);
         return source;
+    }*/
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.addAllowedOriginPattern("*"); // Permitir acesso de qualquer origem
+        corsConfig.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "PATCH"));
+        corsConfig.setAllowCredentials(true);
+        corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfig);
+        return source;
     }
+
 
     @Bean
     FilterRegistrationBean<CorsFilter> corsFilter() {
