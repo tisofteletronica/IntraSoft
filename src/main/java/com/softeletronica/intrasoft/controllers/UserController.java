@@ -1,9 +1,9 @@
 package com.softeletronica.intrasoft.controllers;
 
 
-import com.softeletronica.intrasoft.dto.UserDTO;
-import com.softeletronica.intrasoft.dto.UserInsertDTO;
-import com.softeletronica.intrasoft.dto.UserUpdateDTO;
+import com.softeletronica.intrasoft.dto.primary.UserDTO;
+import com.softeletronica.intrasoft.dto.primary.UserInsertDTO;
+import com.softeletronica.intrasoft.dto.primary.UserUpdateDTO;
 import com.softeletronica.intrasoft.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

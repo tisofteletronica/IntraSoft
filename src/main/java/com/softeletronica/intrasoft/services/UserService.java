@@ -1,17 +1,17 @@
 package com.softeletronica.intrasoft.services;
 
 
-import com.softeletronica.intrasoft.dto.RoleDTO;
-import com.softeletronica.intrasoft.dto.UserDTO;
-import com.softeletronica.intrasoft.dto.UserInsertDTO;
-import com.softeletronica.intrasoft.dto.UserUpdateDTO;
-import com.softeletronica.intrasoft.entities.Department;
-import com.softeletronica.intrasoft.entities.Role;
-import com.softeletronica.intrasoft.entities.User;
+import com.softeletronica.intrasoft.dto.primary.RoleDTO;
+import com.softeletronica.intrasoft.dto.primary.UserDTO;
+import com.softeletronica.intrasoft.dto.primary.UserInsertDTO;
+import com.softeletronica.intrasoft.dto.primary.UserUpdateDTO;
+import com.softeletronica.intrasoft.entities.primary.Department;
+import com.softeletronica.intrasoft.entities.primary.Role;
+import com.softeletronica.intrasoft.entities.primary.User;
 import com.softeletronica.intrasoft.projections.UserDetailsProjection;
-import com.softeletronica.intrasoft.repositories.DepartmentRepository;
-import com.softeletronica.intrasoft.repositories.RoleRepository;
-import com.softeletronica.intrasoft.repositories.UserRepository;
+import com.softeletronica.intrasoft.repositories.primary.DepartmentRepository;
+import com.softeletronica.intrasoft.repositories.primary.RoleRepository;
+import com.softeletronica.intrasoft.repositories.primary.UserRepository;
 import com.softeletronica.intrasoft.services.exceptions.DatabaseException;
 import com.softeletronica.intrasoft.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;

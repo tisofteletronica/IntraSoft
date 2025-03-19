@@ -2,9 +2,9 @@ package com.softeletronica.intrasoft.services.validation;
 
 
 import com.softeletronica.intrasoft.controllers.handlers.FieldMessage;
-import com.softeletronica.intrasoft.entities.User;
-import com.softeletronica.intrasoft.repositories.UserRepository;
-import com.softeletronica.intrasoft.dto.UserInsertDTO;
+import com.softeletronica.intrasoft.entities.primary.User;
+import com.softeletronica.intrasoft.repositories.primary.UserRepository;
+import com.softeletronica.intrasoft.dto.primary.UserInsertDTO;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;

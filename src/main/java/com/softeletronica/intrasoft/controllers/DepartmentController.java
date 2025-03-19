@@ -1,7 +1,7 @@
 package com.softeletronica.intrasoft.controllers;
 
 import com.softeletronica.intrasoft.services.DepartmentService;
-import com.softeletronica.intrasoft.dto.DepartmentDTO;
+import com.softeletronica.intrasoft.dto.primary.DepartmentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

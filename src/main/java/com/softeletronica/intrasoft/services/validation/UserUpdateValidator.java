@@ -2,9 +2,9 @@ package com.softeletronica.intrasoft.services.validation;
 
 
 import com.softeletronica.intrasoft.controllers.handlers.FieldMessage;
-import com.softeletronica.intrasoft.dto.UserUpdateDTO;
-import com.softeletronica.intrasoft.entities.User;
-import com.softeletronica.intrasoft.repositories.UserRepository;
+import com.softeletronica.intrasoft.dto.primary.UserUpdateDTO;
+import com.softeletronica.intrasoft.entities.primary.User;
+import com.softeletronica.intrasoft.repositories.primary.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

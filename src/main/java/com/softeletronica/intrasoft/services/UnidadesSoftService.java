@@ -1,8 +1,8 @@
 package com.softeletronica.intrasoft.services;
 
-import com.softeletronica.intrasoft.dto.UnidadesSoftDTO;
-import com.softeletronica.intrasoft.entities.UnidadesSoft;
-import com.softeletronica.intrasoft.repositories.UnidadesSoftRepository;
+import com.softeletronica.intrasoft.dto.primary.UnidadesSoftDTO;
+import com.softeletronica.intrasoft.entities.primary.UnidadesSoft;
+import com.softeletronica.intrasoft.repositories.primary.UnidadesSoftRepository;
 import com.softeletronica.intrasoft.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

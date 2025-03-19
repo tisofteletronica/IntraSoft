@@ -1,7 +1,7 @@
 package com.softeletronica.intrasoft.services;
 
 
-import com.softeletronica.intrasoft.entities.User;
+import com.softeletronica.intrasoft.entities.primary.User;
 import com.softeletronica.intrasoft.services.exceptions.ForbiddenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
