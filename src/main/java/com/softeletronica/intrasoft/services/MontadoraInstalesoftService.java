@@ -13,6 +13,8 @@ import com.softeletronica.intrasoft.services.exceptions.ResourceNotFoundExceptio
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +43,11 @@ public class MontadoraInstalesoftService {
         return list.stream().map(x -> new MontadoraInstalesoftDTO(x)).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
+    public Page<MontadoraInstalesoftDTO> findAllPage(Pageable pageable) {
+        Page<MontadoraInstalesoft> list = repository.byNamePage(pageable);
+        return list.map(x -> new MontadoraInstalesoftDTO(x));
+    }
     @Transactional(readOnly = true)
     public MontadoraInstalesoftDTO findById(Long id) {
         Optional<MontadoraInstalesoft> obj = repository.findById(id);

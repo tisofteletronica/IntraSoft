@@ -14,7 +14,9 @@ public class MontagemSoftAtuacao {
     @Column(columnDefinition = "TEXT")
     private String descricao;
     private String img_url;
+    @Column(name = "create_at")
     private Instant createAt;
+    @Column(name = "update_at")
     private Instant updateAt;
     private String active;
 

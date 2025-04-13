@@ -70,6 +70,27 @@ public interface AplicacaoInstaleSoftRepository extends JpaRepository<AplicacaoI
             "cat.id")
     Page<ModeloCategoriaProjection> modelocategoria(Long modeloId, Integer ano, Pageable pageable);
 
+    @Query(nativeQuery = true, value = "SELECT DISTINCT ON (cat.id) " +
+            "app.id AS id, " +
+            "cat.id AS categoriaId," +
+            "cat.name AS name, " +
+            "mod.id AS modeloId, " +
+            "mod.name AS modelo, " +
+            "cat.img_url AS imgUrl " +
+            "FROM " +
+            "public.tb_aplicacao_instalesoft app " +
+            "JOIN " +
+            "public.tb_modelos_instalesoft mod ON app.modelo_id = mod.id " +
+            "JOIN " +
+            "public.tb_category_product_instale_soft cat ON app.category_product_instale_soft_id = cat.id " +
+            "WHERE " +
+            "app.active = TRUE " +
+            "AND mod.active = TRUE " +
+            "AND cat.active = TRUE " +
+            "AND app.modelo_id = :modeloId " +
+            "ORDER BY " +
+            "cat.id")
+    Page<ModeloCategoriaProjection> modelocategoriaSemAno(Long modeloId,  Pageable pageable);
     @Query(nativeQuery = true, value = "SELECT " +
             "active, " +
             ":ano as ano, " +
@@ -399,6 +420,44 @@ public interface AplicacaoInstaleSoftRepository extends JpaRepository<AplicacaoI
     )
     Page<ProdutosPorModelosProjection> produtoPorModeloFiltroModeloName(Long productId, Long categoryInstaleSoftId,
                                                                        String modeloName, Pageable pageable);
+
+        @Query(nativeQuery = true, value = "SELECT " +
+        "a.active, " +
+        "ano_ate, " +
+        "ano_de, " +
+        "combo, " +
+        "portas2, " +
+        "portas4, " +
+        "quantidade, " +
+        "quantidade2, " +
+        "vidro_convencional, " +
+        "vidro_convencional2, " +
+        "vidro_inteligente, " +
+        "vidro_inteligente2, " +
+        "category_product_instale_soft_id, " +
+        "a.created_at, " +
+        "a.id, " +
+        "modelo_id, " +
+        "product_id, " +
+        "product_id2, " +
+        "a.updated_at, " +
+        "observacao, " +
+        "observacao2, " +
+        "url_esquema, " +
+        "url_esquema2, " +
+        "url_video, " +
+        "url_video2 " +
+        "FROM " +
+        "public.tb_aplicacao_instalesoft a " +
+        "JOIN " +
+        "public.tb_modelos_instalesoft m ON m.id = a.modelo_id " +
+        "WHERE " +
+        "category_product_instale_soft_id = :categoriaId " +
+        "AND UPPER(m.name) = :modeloName " +
+        "ORDER BY " +
+        "m.name, ano_de ASC")
+    Page<AplicacaoInstaleSoft> filtroModeloNameporCategoria(Long categoriaId, String modeloName,  Pageable pageable);
+
 }
 
 

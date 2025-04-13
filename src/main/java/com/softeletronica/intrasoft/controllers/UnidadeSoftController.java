@@ -1,7 +1,8 @@
 package com.softeletronica.intrasoft.controllers;
 
-import com.apisoft.dto.UnidadeSoftDTO;
-import com.apisoft.services.UnidadeSoftService;
+import com.softeletronica.intrasoft.dto.primary.UnidadesSoftDTO;
+
+import com.softeletronica.intrasoft.services.UnidadesSoftService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,42 +15,43 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping(value = "/unidades-soft")
+@RequestMapping(value = "/unities")
 public class UnidadeSoftController {
+
     @Autowired
-    private UnidadeSoftService service;
+    private UnidadesSoftService service;
+
 
     @GetMapping
-    public ResponseEntity<Page<UnidadeSoftDTO>> findAll(Pageable pageable) {
-        Page<UnidadeSoftDTO> list = service.findAll(pageable);
+    public ResponseEntity<Page<UnidadesSoftDTO>> findAll(Pageable pageable) {
+        Page<UnidadesSoftDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
 
+
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UnidadeSoftDTO> findById(@PathVariable Long id) {
-        UnidadeSoftDTO dto = service.findById(id);
+    public ResponseEntity<UnidadesSoftDTO> findById(@PathVariable Long id) {
+        UnidadesSoftDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
-
-
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @PostMapping(value = "/add")
-    public ResponseEntity<UnidadeSoftDTO> insert(@Valid @RequestBody UnidadeSoftDTO dto) {
+    public ResponseEntity<UnidadesSoftDTO> insert(@Valid @RequestBody UnidadesSoftDTO dto) {
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
-    @PutMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
+    @PutMapping(value = "/update/{id}")
 
-    public ResponseEntity<UnidadeSoftDTO> update(@PathVariable Long id, @Valid @RequestBody
-    UnidadeSoftDTO dto) {
-        UnidadeSoftDTO newDto = service.update(id, dto);
+    public ResponseEntity<UnidadesSoftDTO> update(@PathVariable Long id, @Valid @RequestBody
+    UnidadesSoftDTO dto) {
+        UnidadesSoftDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
@@ -57,3 +59,4 @@ public class UnidadeSoftController {
         return ResponseEntity.noContent().build();
     }
 }
+

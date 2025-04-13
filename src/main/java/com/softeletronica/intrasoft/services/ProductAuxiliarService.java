@@ -4,6 +4,7 @@ import com.softeletronica.intrasoft.dto.primary.UserDTO;
 import com.softeletronica.intrasoft.dto.secondary.ContatoSoftDTO;
 import com.softeletronica.intrasoft.dto.secondary.ModeloInstalesoftDTO;
 import com.softeletronica.intrasoft.dto.secondary.ProductAuxiliarDTO;
+import com.softeletronica.intrasoft.dto.secondary.ProductDTO;
 import com.softeletronica.intrasoft.entities.primary.Auditoria;
 import com.softeletronica.intrasoft.entities.secondary.ContatoSoft;
 import com.softeletronica.intrasoft.entities.secondary.ModeloInstalesoft;
@@ -50,6 +51,12 @@ public class ProductAuxiliarService {
         Optional<ProductAuxiliar> obj = productAuxiliarRepository.findById(id);
         ProductAuxiliar entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
         return new ProductAuxiliarDTO(entity);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductAuxiliarDTO> SorteCode(String code, Pageable pageable) {
+        Page<ProductAuxiliar> list = productAuxiliarRepository.sortCode(code, pageable);
+        return list.map(ProductAuxiliarDTO::new);
     }
 
     @Transactional

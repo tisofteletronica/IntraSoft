@@ -10,7 +10,6 @@ public class MontagemSoftDiferenciaisDTO {
     private Long id;
     private String diferencial;
     private String descricao;
-
     private String urlImg1;
     private String urlImg2;
     private String urlImg3;

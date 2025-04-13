@@ -1,8 +1,11 @@
 package com.softeletronica.intrasoft.services;
 
 
+import com.softeletronica.intrasoft.dto.primary.UserDTO;
 import com.softeletronica.intrasoft.dto.secondary.ContatoSoftDTO;
+import com.softeletronica.intrasoft.entities.primary.Auditoria;
 import com.softeletronica.intrasoft.entities.secondary.ContatoSoft;
+import com.softeletronica.intrasoft.repositories.primary.AuditoriaRepository;
 import com.softeletronica.intrasoft.repositories.secondary.ContatoSoftRepository;
 import com.softeletronica.intrasoft.services.exceptions.DatabaseException;
 import com.softeletronica.intrasoft.services.exceptions.ResourceNotFoundException;
@@ -24,6 +27,10 @@ public class ContatoSoftService {
 
     @Autowired
     private ContatoSoftRepository repository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    AuditoriaRepository auditoriaRepository;
 
     @Transactional(readOnly = true)
     public Page<ContatoSoftDTO> findAll(Pageable pageable) {
@@ -45,6 +52,8 @@ public class ContatoSoftService {
         entity.setCreateAt(Instant.now());
         entity.setUpdateAt(Instant.now());
         entity = repository.save(entity);
+        salvarAuditoria("Contato Soft  Adicionado " + entity.getEmail());
+
         return new ContatoSoftDTO(entity);
     }
 
@@ -56,6 +65,7 @@ public class ContatoSoftService {
             copyDtoToEntity(dto, entity);
             entity.setUpdateAt(Instant.now());
             entity = repository.save(entity);
+            salvarAuditoria("Contato Soft  Atualizado " + entity.getEmail());
             return new ContatoSoftDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
@@ -69,7 +79,11 @@ public class ContatoSoftService {
             throw new ResourceNotFoundException("Recurso não encontrado");
         }
         try {
+            ContatoSoft entity = repository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
             repository.deleteById(id);
+            salvarAuditoria("Contato Soft  Atualizado " + entity.getEmail());
+
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Falha de integridade referencial");
         }
@@ -87,14 +101,17 @@ public class ContatoSoftService {
         entity.setActive(dto.getActive());
     }
 
-    private void updateDtoToEntity(ContatoSoftDTO dto, ContatoSoft entity) {
-        entity.setSetor(dto.getSetor());
-        entity.setWhatsapp(dto.getWhatsapp());
-        entity.setPhone1(dto.getPhone1());
-        entity.setPhone2(dto.getPhone2());
-        entity.setPhone3(dto.getPhone3());
-        entity.setUpdateAt(dto.getUpdateAt());
-        entity.setEmail(dto.getEmail());
-        entity.setActive(dto.getActive());
+    private void salvarAuditoria(String objeto) {
+        // Obtendo usuário autenticado
+        UserDTO usuarioAutenticado = userService.getMe();
+
+        // Criando e salvando auditoria
+        Auditoria auditoria = new Auditoria();
+        auditoria.setCreated(Instant.now());
+        auditoria.setObjeto(objeto);
+        auditoria.setUsuario(usuarioAutenticado.getEmail());
+
+        auditoriaRepository.save(auditoria);
     }
+
 }

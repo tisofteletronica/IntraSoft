@@ -5,10 +5,12 @@ import com.softeletronica.intrasoft.dto.primary.RoleDTO;
 import com.softeletronica.intrasoft.dto.primary.UserDTO;
 import com.softeletronica.intrasoft.dto.primary.UserInsertDTO;
 import com.softeletronica.intrasoft.dto.primary.UserUpdateDTO;
+import com.softeletronica.intrasoft.entities.primary.Auditoria;
 import com.softeletronica.intrasoft.entities.primary.Department;
 import com.softeletronica.intrasoft.entities.primary.Role;
 import com.softeletronica.intrasoft.entities.primary.User;
 import com.softeletronica.intrasoft.projections.UserDetailsProjection;
+import com.softeletronica.intrasoft.repositories.primary.AuditoriaRepository;
 import com.softeletronica.intrasoft.repositories.primary.DepartmentRepository;
 import com.softeletronica.intrasoft.repositories.primary.RoleRepository;
 import com.softeletronica.intrasoft.repositories.primary.UserRepository;
@@ -30,6 +32,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +49,8 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    @Autowired
+    private AuditoriaRepository auditoriaRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -101,6 +106,7 @@ public class UserService implements UserDetailsService {
         copyDtoToEntity(dto, entity);
         entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = repository.save(entity);
+        salvarAuditoria("Usuario Adicionado " + entity.getUsername());
         return new UserDTO(entity);
     }
 
@@ -111,6 +117,7 @@ public class UserService implements UserDetailsService {
             copyDtoToEntity(dto, entity);
             entity.setPassword(passwordEncoder.encode(dto.getPassword()));
             entity = repository.save(entity);
+            salvarAuditoria("Usuario Atualizado " + entity.getUsername());
             return new UserDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
@@ -119,11 +126,14 @@ public class UserService implements UserDetailsService {
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
-        if (!repository.existsById(id)) {
+        Optional<User> optionalEntity = repository.findById(id);
+        if (optionalEntity.isEmpty()) {
             throw new ResourceNotFoundException("Recurso não encontrado");
         }
         try {
+            User entity = optionalEntity.get(); // Obtém a entidade antes da exclusão
             repository.deleteById(id);
+            salvarAuditoria("Usuario Deletado " + entity.getUsername());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Falha de integridade referencial");
         }
@@ -156,6 +166,20 @@ public class UserService implements UserDetailsService {
             entity.getRoles().add(role);
         }
     }
+
+    private void salvarAuditoria(String objeto) {
+        // Obtendo usuário autenticado
+        User usuarioAutenticado = authenticated();
+
+        // Criando e salvando auditoria
+        Auditoria auditoria = new Auditoria();
+        auditoria.setCreated(Instant.now());
+        auditoria.setObjeto(objeto);
+        auditoria.setUsuario(usuarioAutenticado.getEmail());
+
+        auditoriaRepository.save(auditoria);
+    }
+
 
 }
 

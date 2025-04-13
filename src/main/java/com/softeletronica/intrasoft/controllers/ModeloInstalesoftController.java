@@ -63,7 +63,7 @@ public class ModeloInstalesoftController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_INSTALE')")
     @PostMapping(value = "/add")
     public ResponseEntity<ModeloInstalesoftDTO> insert(@Valid @RequestBody ModeloInstalesoftDTO dto) {
         dto = service.insert(dto);
@@ -71,7 +71,7 @@ public class ModeloInstalesoftController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_INSTALE')")
     @PutMapping(value = "/update/{id}")
 
     public ResponseEntity<ModeloInstalesoftDTO> update(@PathVariable Long id, @Valid @RequestBody
@@ -80,7 +80,7 @@ public class ModeloInstalesoftController {
         return ResponseEntity.ok().body(newDto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_INSTALE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);

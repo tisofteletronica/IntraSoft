@@ -14,7 +14,9 @@ public class CatalogoSoft {
 
     private String descricao;
     private String local;
+    @Column(name = "create_at")
     private Instant createAt;
+    @Column(name = "update_at")
     private Instant updateAt;
     private Boolean active;
 

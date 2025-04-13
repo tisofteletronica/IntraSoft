@@ -1,6 +1,7 @@
 package com.softeletronica.intrasoft.controllers;
 
 import com.softeletronica.intrasoft.services.GoogleDriveService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,6 +17,7 @@ import java.io.IOException;
 public class GoogleDriveController {
 
     @PostMapping("/upload")
+    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_SITE') and hasRole('ROLE_INSTALE')")
     public String uploadImage(@RequestParam("file") MultipartFile file) {
         try {
             // Salvar temporariamente o arquivo

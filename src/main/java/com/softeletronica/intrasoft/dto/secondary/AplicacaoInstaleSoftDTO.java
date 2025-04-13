@@ -9,6 +9,7 @@ import java.time.Instant;
 public class AplicacaoInstaleSoftDTO {
     private Long id;
     private Long modeloInstalesoftId;
+    private Long montadoraInstaleSoftId;
     private String nameMontadoraInstaleSoft;
     private String nameModeloInstaleSoft;
     private Integer ano;
@@ -66,7 +67,7 @@ public class AplicacaoInstaleSoftDTO {
 
     }
 
-    public AplicacaoInstaleSoftDTO(Long id, Long modeloInstalesoftId, String nameMontadoraInstaleSoft,
+    public AplicacaoInstaleSoftDTO(Long id, Long modeloInstalesoftId, Long montadoraInstaleSoftId, String nameMontadoraInstaleSoft,
                                    String nameModeloInstaleSoft, Integer ano, Integer anoDe, Integer anoAte, Long categoryComercialId,
                                    String categoryComercialName, Long categoryInstaleSoftId,
                                    String categoryInstaleSoftName, Long productId, String productName,
@@ -83,6 +84,7 @@ public class AplicacaoInstaleSoftDTO {
                                    Instant createdAt, Instant updatedAt, Boolean active) {
         this.id = id;
         this.modeloInstalesoftId = modeloInstalesoftId;
+        this.montadoraInstaleSoftId = montadoraInstaleSoftId;
         this.nameMontadoraInstaleSoft = nameMontadoraInstaleSoft;
         this.nameModeloInstaleSoft = nameModeloInstaleSoft;
         this.ano = ano;
@@ -137,6 +139,7 @@ public class AplicacaoInstaleSoftDTO {
     public AplicacaoInstaleSoftDTO(AplicacaoInstaleSoft entities) {
         id = entities.getId();
         modeloInstalesoftId = (entities.getModeloInstalesoft() != null) ? entities.getModeloInstalesoft().getId() : null;
+        montadoraInstaleSoftId = (entities.getModeloInstalesoft() != null) ? entities.getModeloInstalesoft().getMontadoras().getId() : null;
         nameMontadoraInstaleSoft = (entities.getModeloInstalesoft() != null) ? entities.getModeloInstalesoft().getMontadoras().getName() : null;
         nameModeloInstaleSoft = (entities.getModeloInstalesoft() != null) ? entities.getModeloInstalesoft().getName() : null;
         anoDe = entities.getAnoDe();
@@ -200,6 +203,10 @@ public class AplicacaoInstaleSoftDTO {
 
     public Long getModeloInstalesoftId() {
         return modeloInstalesoftId;
+    }
+
+    public Long getMontadoraInstaleSoftId() {
+        return montadoraInstaleSoftId;
     }
 
     public String getNameMontadoraInstaleSoft() {

@@ -1,6 +1,7 @@
 package com.softeletronica.intrasoft.dto.secondary;
 
 import com.softeletronica.intrasoft.entities.secondary.SetoresAtendimentoSoft;
+import jakarta.persistence.Column;
 
 import java.time.Instant;
 

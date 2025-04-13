@@ -12,37 +12,67 @@ public class MontagemSoft {
     private Long id;
     @Column(columnDefinition = "TEXT")
     private String descricao;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "area_atuacao")
     private String areaAtuacao;
+    @Column(name = "url_img")
     private String urlImg;
+    @Column(name = "url_img_2")
     private String urlImg_2;
+    @Column(name = "url_img_3")
     private String urlImg_3;
+    @Column(name = "url_img_4")
     private String urlImg_4;
+    @Column(name = "url_img_5")
     private String urlImg_5;
+    @Column(name = "url_img_6")
     private String urlImg_6;
+    @Column(name = "url_img_7")
     private String urlImg_7;
+    @Column(name = "url_img_8")
     private String urlImg_8;
+    @Column(name = "url_img_9")
     private String urlImg_9;
+    @Column(name = "url_img_10")
     private String urlImg_10;
+    @Column(name = "url_img_11")
     private String urlImg_11;
+    @Column(name = "url_img_12")
     private String urlImg_12;
+    @Column(name = "url_img_13")
     private String urlImg_13;
+    @Column(name = "url_img_14")
     private String urlImg_14;
+    @Column(name = "url_img_15")
     private String urlImg_15;
+    @Column(name = "url_img_16")
     private String urlImg_16;
+    @Column(name = "url_img_17")
     private String urlImg_17;
+    @Column(name = "url_img_18")
     private String urlImg_18;
+    @Column(name = "url_img_19")
     private String urlImg_19;
+    @Column(name = "url_img_20")
     private String urlImg_20;
+    @Column(name = "url_img_21")
     private String urlImg_21;
+    @Column(name = "url_img_22")
     private String urlImg_22;
+    @Column(name = "url_img_23")
     private String urlImg_23;
+    @Column(name = "url_img_24")
     private String urlImg_24;
+    @Column(name = "url_img_25")
     private String urlImg_25;
+    @Column(name = "url_img_26")
     private String urlImg_26;
+    @Column(name = "url_img_27")
     private String urlImg_27;
+    @Column(name = "url_img_28")
     private String urlImg_28;
+    @Column(name = "url_img_29")
     private String urlImg_29;
+    @Column(name = "url_img_30")
     private String urlImg_30;
 
 

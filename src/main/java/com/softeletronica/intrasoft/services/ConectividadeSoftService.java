@@ -1,16 +1,24 @@
 package com.softeletronica.intrasoft.services;
 
 
-import com.apisoft.dto.ConectividadeSoftDTO;
-import com.apisoft.entities.ConectividadeSoft;
-import com.apisoft.repositories.ConectividadeSoftRepository;
-import com.apisoft.services.exceptions.ResourceNotFoundException;
+import com.softeletronica.intrasoft.dto.primary.UserDTO;
+import com.softeletronica.intrasoft.dto.secondary.ConectividadeSoftDTO;
+import com.softeletronica.intrasoft.entities.primary.Auditoria;
+import com.softeletronica.intrasoft.entities.secondary.ConectividadeSoft;
+import com.softeletronica.intrasoft.repositories.primary.AuditoriaRepository;
+import com.softeletronica.intrasoft.repositories.secondary.ConectividadeSoftRepository;
+import com.softeletronica.intrasoft.services.exceptions.DatabaseException;
+import com.softeletronica.intrasoft.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Optional;
 
 
@@ -19,6 +27,10 @@ public class ConectividadeSoftService {
 
     @Autowired
     private ConectividadeSoftRepository repository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private AuditoriaRepository auditoriaRepository;
 
     @Transactional(readOnly = true)
     public Page<ConectividadeSoftDTO> findAll(Pageable pageable) {
@@ -33,95 +45,66 @@ public class ConectividadeSoftService {
         return new ConectividadeSoftDTO(entity);
     }
 
-  /*  @Transactional
-    public UnidadeSoftDTO insert(UnidadeSoftDTO dto) {
-        UnidadeSoft entity = new UnidadeSoft();
+    @Transactional
+    public ConectividadeSoftDTO insert(ConectividadeSoftDTO dto) {
+        ConectividadeSoft entity = new ConectividadeSoft();
         copyDtoToEntity(dto, entity);
-        entity.setCreatedAt(Instant.now());
-        entity.setUpdateAt(Instant.now());
         entity = repository.save(entity);
-        return new UnidadeSoftDTO(entity);
-    }*/
 
-  /*  @Transactional
-    public UnidadeSoftDTO update(Long id, UnidadeSoftDTO dto) {
+        salvarAuditoria("Conectividade BLE Adicionado " + entity.getId());
+
+        return new ConectividadeSoftDTO(entity);
+    }
+
+    @Transactional
+    public ConectividadeSoftDTO  update(Long id, ConectividadeSoftDTO dto) {
         try {
-            UnidadeSoft entity = repository.getReferenceById(id);
-            updateDtoToEntity(dto, entity);
-            entity.setUpdateAt(Instant.now());
+            ConectividadeSoft entity = repository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+            copyDtoToEntity(dto, entity);
+
             entity = repository.save(entity);
-            return new UnidadeSoftDTO(entity);
+            salvarAuditoria("Conectividade BLE Atualizado " + entity.getId());
+            return new ConectividadeSoftDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);
         }
-    }*/
+    }
 
-  /*  @Transactional(propagation = Propagation.SUPPORTS)
+   @Transactional(propagation = Propagation.SUPPORTS)
     public void delete(Long id) {
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException("Recurso não encontrado");
         }
         try {
+            ConectividadeSoft entity = repository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
             repository.deleteById(id);
+            salvarAuditoria("Conectividade BLE Deletado " + entity.getId());
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Falha de integridade referencial");
         }
-    }*/
-
- /*   private void copyDtoToEntity(UnidadeSoftDTO dto, UnidadeSoft entity) {
-        entity.setDescription(dto.getDescription());
-        entity.setAddress(dto.getAddress());
-        entity.setAddress(dto.getAddress());
-        entity.setNumber(dto.getNumber());
-        entity.setComplement(dto.getComplement());
-        entity.setCity(dto.getCity());
-        entity.setNeighborhood(dto.getNeighborhood());
-        entity.setUf(dto.getUf());
-        entity.setCountry(dto.getCountry());
-        entity.setCep(dto.getCep());
-        entity.setPhone1(dto.getPhone1());
-        entity.setPhone2(dto.getPhone2());
-        entity.setPhone3(dto.getPhone3());
-        entity.setImgUrl1(dto.getImgUrl1());
-        entity.setImgUrl2(dto.getImgUrl2());
-        entity.setImgUrl3(dto.getImgUrl3());
-        entity.setImgUrl4(dto.getImgUrl4());
-        entity.setImgUrl5(dto.getImgUrl5());
-        entity.setImgUrl6(dto.getImgUrl6());
-        entity.setImgUrl7(dto.getImgUrl7());
-        entity.setImgUrl8(dto.getImgUrl8());
-        entity.setImgUrl9(dto.getImgUrl9());
-        entity.setImgUrl10(dto.getImgUrl10());
-        entity.setCreatedAt(dto.getCreatedAt());
-        entity.setUpdateAt(dto.getUpdateAt());
-        entity.setActive(dto.getActive());
     }
+    private void copyDtoToEntity(ConectividadeSoftDTO dto, ConectividadeSoft entity) {
+        entity.setDescricao(dto.getDescricao());
+        entity.setSistemasConexaoBle(dto.getSistemasConexaoBle());
+        entity.setAplicacoes(dto.getAplicacoes());
+        entity.setAnatel(dto.getAnatel());
+        entity.setUrlImg1(dto.getUrlImg1());
+        entity.setUrlImg2(dto.getUrlImg2());
+        entity.setUrlImg3(dto.getUrlImg3());
 
-    private void updateDtoToEntity(UnidadeSoftDTO dto, UnidadeSoft entity) {
-        entity.setDescription(dto.getDescription());
-        entity.setAddress(dto.getAddress());
-        entity.setAddress(dto.getAddress());
-        entity.setNumber(dto.getNumber());
-        entity.setComplement(dto.getComplement());
-        entity.setCity(dto.getCity());
-        entity.setNeighborhood(dto.getNeighborhood());
-        entity.setUf(dto.getUf());
-        entity.setCountry(dto.getCountry());
-        entity.setCep(dto.getCep());
-        entity.setPhone1(dto.getPhone1());
-        entity.setPhone2(dto.getPhone2());
-        entity.setPhone3(dto.getPhone3());
-        entity.setImgUrl1(dto.getImgUrl1());
-        entity.setImgUrl2(dto.getImgUrl2());
-        entity.setImgUrl3(dto.getImgUrl3());
-        entity.setImgUrl4(dto.getImgUrl4());
-        entity.setImgUrl5(dto.getImgUrl5());
-        entity.setImgUrl6(dto.getImgUrl6());
-        entity.setImgUrl7(dto.getImgUrl7());
-        entity.setImgUrl8(dto.getImgUrl8());
-        entity.setImgUrl9(dto.getImgUrl9());
-        entity.setImgUrl10(dto.getImgUrl10());
-        entity.setUpdateAt(dto.getUpdateAt());
-        entity.setActive(dto.getActive());
-    }*/
+    }
+    private void salvarAuditoria(String objeto) {
+        // Obtendo usuário autenticado
+        UserDTO usuarioAutenticado = userService.getMe();
+
+        // Criando e salvando auditoria
+        Auditoria auditoria = new Auditoria();
+        auditoria.setCreated(Instant.now());
+        auditoria.setObjeto(objeto);
+        auditoria.setUsuario(usuarioAutenticado.getEmail());
+
+        auditoriaRepository.save(auditoria);
+    }
 }

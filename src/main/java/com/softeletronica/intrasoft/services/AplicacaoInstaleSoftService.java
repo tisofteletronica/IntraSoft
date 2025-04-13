@@ -72,10 +72,23 @@ public class AplicacaoInstaleSoftService {
         Page<ModeloCategoriaProjection> list = repository.modelocategoria(modeloId, ano, pageable);
         return list.map(x -> new CategoriaModeloMinDTO(x));
     }
+
+    @Transactional(readOnly = true)
+    public Page<CategoriaModeloMinDTO> filtrarCategoriaSemAno(Long modeloId, Pageable pageable) {
+        Page<ModeloCategoriaProjection> list = repository.modelocategoriaSemAno(modeloId, pageable);
+        return list.map(x -> new CategoriaModeloMinDTO(x));
+    }
+
     @Transactional(readOnly = true)
     public Page<AplicacaoInstaleSoftDTO> modeloProduto(Integer ano, Long categoriaId, Long modeloId, Pageable pageable) {
         Page<AplicacaoInstaleSoft> list = repository.modeloProduto(ano, categoriaId, modeloId, pageable);
         return list.map(x -> new AplicacaoInstaleSoftDTO(x, ano));
+    }
+
+    @Transactional(readOnly = true)
+    public Page<AplicacaoInstaleSoftDTO> modeloProdutoNome(Long categoriaId, String modeloName, Pageable pageable) {
+        Page<AplicacaoInstaleSoft> list = repository.filtroModeloNameporCategoria(categoriaId, modeloName, pageable);
+        return list.map(x -> new AplicacaoInstaleSoftDTO(x));
     }
     @Transactional(readOnly = true)
     public Page<AplicacaoInstaleSoftDTO> modeloProdutoVc(Integer ano, Long categoriaId, Long modeloId, Integer vidroConvencional,

@@ -24,17 +24,29 @@ public class UnidadeSoft {
     private String phone1;
     private String phone2;
     private String phone3;
+    @Column(name = "img_url1")
     private String imgUrl1;
+    @Column(name = "img_url2")
     private String imgUrl2;
+    @Column(name = "img_url3")
     private String imgUrl3;
+    @Column(name = "img_url4")
     private String imgUrl4;
+    @Column(name = "img_url5")
     private String imgUrl5;
+    @Column(name = "img_url6")
     private String imgUrl6;
+    @Column(name = "img_url7")
     private String imgUrl7;
+    @Column(name = "img_url8")
     private String imgUrl8;
+    @Column(name = "img_url9")
     private String imgUrl9;
+    @Column(name = "img_url10")
     private String imgUrl10;
+    @Column(name = "created_at")
     private Instant createdAt;
+    @Column(name = "update_at")
     private Instant updateAt;
     private Boolean active;
 

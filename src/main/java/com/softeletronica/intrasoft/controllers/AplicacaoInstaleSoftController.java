@@ -51,6 +51,16 @@ public class AplicacaoInstaleSoftController {
         return ResponseEntity.ok().body(list);
     }
 
+    @GetMapping(value = "/modelocategoriasemano")
+    public ResponseEntity<Page<CategoriaModeloMinDTO>> filterCategoriaSemAno(
+            @RequestParam(value = "modeloId", defaultValue = "0") Long modeloId,
+
+            Pageable pageable
+    ) {
+        Page<CategoriaModeloMinDTO> list = service.filtrarCategoriaSemAno(modeloId, pageable);
+        return ResponseEntity.ok().body(list);
+    }
+
     @GetMapping(value = "/modeloprodutos")
     public ResponseEntity<Page<AplicacaoInstaleSoftDTO>> modeloProduto(
             @RequestParam(value = "ano", defaultValue = "0") Integer ano,
@@ -59,6 +69,16 @@ public class AplicacaoInstaleSoftController {
             Pageable pageable
     ) {
         Page<AplicacaoInstaleSoftDTO> list = service.modeloProduto(ano, categoriaId, modeloId, pageable);
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/modeloname")
+    public ResponseEntity<Page<AplicacaoInstaleSoftDTO>> modeloProdutoName(
+            @RequestParam(value = "categoriaId", defaultValue = "0") Long categoriaId,
+            @RequestParam(value = "modeloName", defaultValue = "0")  String modeloName,
+            Pageable pageable
+    ) {
+        Page<AplicacaoInstaleSoftDTO> list = service.modeloProdutoNome(categoriaId, modeloName,  pageable);
         return ResponseEntity.ok().body(list);
     }
 
@@ -130,7 +150,7 @@ public class AplicacaoInstaleSoftController {
                 modeloName, pageable);
         return ResponseEntity.ok().body(list);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_INSTALE')")
     @PostMapping(value = "/add")
     public ResponseEntity<AplicacaoInstaleSoftInsertDTO> insert(@Valid @RequestBody AplicacaoInstaleSoftInsertDTO dto) {
         dto = service.insert(dto);
@@ -138,16 +158,15 @@ public class AplicacaoInstaleSoftController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_INSTALE')")
     @PutMapping(value = "/update/{id}")
-
     public ResponseEntity<AplicacaoInstaleSoftInsertDTO> update(@PathVariable Long id, @Valid @RequestBody
     AplicacaoInstaleSoftInsertDTO dto) {
         AplicacaoInstaleSoftInsertDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_INSTALE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);

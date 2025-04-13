@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,8 +29,6 @@ public class ProductController {
         return ResponseEntity.ok().body(list);
     }
 
-
-
     @GetMapping(value = "/categoryById")
     public ResponseEntity<Page<ProductDTO>> filterByCategoryId(
             @RequestParam(value = "categoryId", defaultValue = "0") Long categoryCommercialId,
@@ -45,6 +45,22 @@ public class ProductController {
         Page<ProductDTO> list = service.filterByName(name, pageable);
         return ResponseEntity.ok().body(list);
     }
+    @GetMapping(value = "/filtercode")
+    public ResponseEntity<Page<ProductDTO>> filterCode(
+            @RequestParam(value = "code", defaultValue = "") String code,
+            Pageable pageable) {
+        Page<ProductDTO> list = service.SorteCode(code, pageable);
+        return ResponseEntity.ok().body(list);
+    }
+
+    @GetMapping(value = "/sortcode")
+    public ResponseEntity<Page<ProductDTO>> SortCode(
+            @RequestParam(required = false) String code,
+            Pageable pageable) {
+        Page<ProductDTO> list = service.SorteCode(code, pageable);
+        return ResponseEntity.ok().body(list);
+    }
+
 
     @GetMapping(value = "/filterCategoryTravaAtuador")
     public ResponseEntity<Page<ProductDTO>> filterByCategoryCustom(

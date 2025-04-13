@@ -32,9 +32,9 @@ public class SecondaryDatabaseConfig {
     @ConfigurationProperties(prefix = "spring.datasource.secondary")
     public DataSource primaryDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
-       // dataSourceBuilder.url("jdbc:postgresql://node182448-env-4710898.jelastic.saveincloud.net:15296/basesoft");
-        // dataSourceBuilder.username("webadmin");
-        //dataSourceBuilder.password("QTXcip37126");
+      /*  dataSourceBuilder.url("jdbc:postgresql://node182448-env-4710898.jelastic.saveincloud.net:15296/basesoft");
+        dataSourceBuilder.username("webadmin");
+         dataSourceBuilder.password("QTXcip37126");*/
         dataSourceBuilder.url("jdbc:postgresql://localhost:5432/basesoft");
         dataSourceBuilder.username("postgres");
         dataSourceBuilder.password("1234567");

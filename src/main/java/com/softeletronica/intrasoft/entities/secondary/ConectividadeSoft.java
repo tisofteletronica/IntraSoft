@@ -12,14 +12,17 @@ public class ConectividadeSoft {
     private Long id;
     @Column(columnDefinition = "TEXT")
     private String descricao;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "sistemas_conexao_ble")
     private String sistemasConexaoBle;
     @Column(columnDefinition = "TEXT")
     private String aplicacoes;
     @Column(columnDefinition = "TEXT")
     private String anatel;
+    @Column(name = "url_img1")
     private String urlImg1;
+    @Column(name= "url_img2")
     private String urlImg2;
+    @Column(name = "url_img3")
     private String urlImg3;
 
 

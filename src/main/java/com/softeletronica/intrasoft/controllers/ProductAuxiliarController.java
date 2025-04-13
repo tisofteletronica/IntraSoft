@@ -3,6 +3,7 @@ package com.softeletronica.intrasoft.controllers;
 import com.softeletronica.intrasoft.dto.primary.DepartmentDTO;
 import com.softeletronica.intrasoft.dto.secondary.MontadoraInstalesoftDTO;
 import com.softeletronica.intrasoft.dto.secondary.ProductAuxiliarDTO;
+import com.softeletronica.intrasoft.dto.secondary.ProductDTO;
 import com.softeletronica.intrasoft.services.DepartmentService;
 import com.softeletronica.intrasoft.services.ProductAuxiliarService;
 import jakarta.validation.Valid;
@@ -33,22 +34,31 @@ public class ProductAuxiliarController {
     public ResponseEntity<ProductAuxiliarDTO> findById(@PathVariable Long id) {
         ProductAuxiliarDTO dto = productAuxiliarService.findById(id);
         return ResponseEntity.ok().body(dto);
+
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+
+    @GetMapping(value = "/filtercode")
+    public ResponseEntity<Page<ProductAuxiliarDTO>> filterCode(
+            @RequestParam(value = "code", defaultValue = "") String code,
+            Pageable pageable) {
+        Page<ProductAuxiliarDTO> list = productAuxiliarService.SorteCode(code, pageable);
+        return ResponseEntity.ok().body(list);
+    }
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_INSTALE')")
     @PostMapping(value = "/add")
     public ResponseEntity<ProductAuxiliarDTO> insert(@Valid @RequestBody ProductAuxiliarDTO dto) {
         dto = productAuxiliarService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_INSTALE')")
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<ProductAuxiliarDTO> update(@PathVariable Long id, @Valid @RequestBody
     ProductAuxiliarDTO dto) {
         ProductAuxiliarDTO newDto = productAuxiliarService.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_INSTALE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         productAuxiliarService.delete(id);

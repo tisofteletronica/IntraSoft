@@ -6,7 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface UnidadesSoftRepository extends JpaRepository<UnidadesSoft, Long> {
+public interface UnidadeSoftRepository extends JpaRepository<UnidadesSoft, Long> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM "
     + "tb_unidadessoft "

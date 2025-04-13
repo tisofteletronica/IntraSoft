@@ -1,7 +1,8 @@
 package com.softeletronica.intrasoft.controllers;
 
-import com.apisoft.dto.RepresentanteSoftDTO;
-import com.apisoft.services.RepresentanteSoftService;
+
+import com.softeletronica.intrasoft.dto.secondary.RepresentanteSoftDTO;
+import com.softeletronica.intrasoft.services.RepresentanteSoftService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -32,7 +33,7 @@ public class RepresentanteSoftController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @PostMapping(value = "/add")
     public ResponseEntity<RepresentanteSoftDTO> insert(@Valid @RequestBody RepresentanteSoftDTO dto) {
         dto = service.insert(dto);
@@ -40,7 +41,7 @@ public class RepresentanteSoftController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @PutMapping(value = "/update/{id}")
 
     public ResponseEntity<RepresentanteSoftDTO> update(@PathVariable Long id, @Valid @RequestBody
@@ -49,7 +50,7 @@ public class RepresentanteSoftController {
         return ResponseEntity.ok().body(newDto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);

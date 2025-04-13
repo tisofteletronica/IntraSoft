@@ -34,21 +34,21 @@ public class ProductCommercialMontadoraController {
         ProductCommercialMontadoraDTO dto = productCommercialMontadoraService.findById(id);
         return ResponseEntity.ok().body(dto);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @PostMapping(value = "/add")
     public ResponseEntity<ProductCommercialMontadoraDTO> insert(@Valid @RequestBody ProductCommercialMontadoraDTO dto) {
         dto = productCommercialMontadoraService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(dto.getId()).toUri();
         return ResponseEntity.created(uri).body(dto);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @PutMapping(value = "/update/{id}")
     public ResponseEntity<ProductCommercialMontadoraDTO> update(@PathVariable Long id, @Valid @RequestBody
     ProductCommercialMontadoraDTO dto) {
         ProductCommercialMontadoraDTO newDto = productCommercialMontadoraService.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_INSTALE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         productCommercialMontadoraService.delete(id);

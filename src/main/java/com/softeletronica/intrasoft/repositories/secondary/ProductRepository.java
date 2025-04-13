@@ -25,6 +25,24 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             + "(UPPER(obj.name) LIKE UPPER(CONCAT(:name, '%')))")
     Page<Product> filterByName(String name, Pageable pageable);
 
+    @Query(nativeQuery = true, value = "SELECT "
+            + "active, categorycommercial_id, id, code, created_at, weight, length, width, height, description_commercial_resume,"
+            + " description_commercial,description_characteristics_commercial, application_commercial, epilogue_commercial, description_instalesoft, "
+            + "capa_imagem, img_url1, img_url2, img_url3, img_url4, img_url5, zip, name, updated_at, url_logo_img, url_manual "
+            + "FROM public.tb_products "
+            + "WHERE (:code IS NULL OR code ILIKE %:code%) "
+            + "ORDER BY code ASC")
+    Page<Product> SorteCode(@Param("code") String code, Pageable pageable);
+
+    @Query("SELECT obj FROM Product obj WHERE "
+            + "(UPPER(obj.code) LIKE UPPER(CONCAT(:code, '%')))")
+    Page<Product> filterCode(String code, Pageable pageable);
+
+
+    @Query("SELECT obj FROM Product obj WHERE "
+            + "(UPPER(obj.code) LIKE UPPER(CONCAT(:code, '%')))")
+    Page<Product> filterByCode(String code, Pageable pageable);
+
     @Query(nativeQuery = true, value = "SELECT * " +
             "FROM public.tb_products " +
             "WHERE name ILIKE '%' || :product || '%' " +

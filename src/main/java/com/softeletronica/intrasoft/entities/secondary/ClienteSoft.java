@@ -11,8 +11,9 @@ public class ClienteSoft {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String tipo;
+    @Column(name = "cnpjcpf")
     private Integer cnpjCPF;
-    @Column(columnDefinition = "TEXT")
+    @Column(columnDefinition = "TEXT", name = "razao_social")
     private String razaoSocial;
     private String email;
     private String telefone1;
@@ -31,7 +32,9 @@ public class ClienteSoft {
     private String latitude;
     private String longitude;
     private String site;
+    @Column(name = "create_at")
     private Instant createAt;
+    @Column(name = "update_at")
     private Instant updateAt;
     private String active;
 

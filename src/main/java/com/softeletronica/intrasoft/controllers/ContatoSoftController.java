@@ -33,7 +33,7 @@ public class ContatoSoftController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @PostMapping(value = "/add")
     public ResponseEntity<ContatoSoftDTO> insert(@Valid @RequestBody ContatoSoftDTO dto) {
         dto = service.insert(dto);
@@ -41,15 +41,15 @@ public class ContatoSoftController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
-    @PutMapping(value = "/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<ContatoSoftDTO> update(@PathVariable Long id, @Valid @RequestBody
     ContatoSoftDTO dto) {
         ContatoSoftDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);

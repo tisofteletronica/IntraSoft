@@ -10,7 +10,6 @@ public class SobreNosLinhaTempoSoft {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String anos;
     @Column(columnDefinition = "TEXT")
     private String historico;

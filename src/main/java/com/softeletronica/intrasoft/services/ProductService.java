@@ -43,6 +43,19 @@ public class ProductService {
         Page<Product> list = repository.findAll(pageable);
         return list.map(x -> new ProductDTO(x));
     }
+
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> SorteCode(String code, Pageable pageable) {
+        Page<Product> list = repository.SorteCode(code, pageable);
+        return list.map(ProductDTO::new);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> filterCode(String code, Pageable pageable) {
+        Page<Product> list = repository.filterCode(code, pageable);
+        return list.map(ProductDTO::new);
+    }
+
     @Transactional(readOnly = true)
     public Page<ProductDTO> filterCategoryById(Long categoryCommercialId, Pageable pageable) {
         Page<Product> list = repository.filterCategoryById(categoryCommercialId, pageable);
@@ -53,6 +66,18 @@ public class ProductService {
 
         if (name != "") {
             Page<Product> list = repository.filterByName(name, pageable);
+            return list.map(x -> new ProductDTO(x));
+        } else {
+            Page<Product> list = repository.findAll(pageable);
+            return list.map(x -> new ProductDTO(x));
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ProductDTO> filterByCode(String code, Pageable pageable) {
+
+        if (code != "") {
+            Page<Product> list = repository.filterByCode(code, pageable);
             return list.map(x -> new ProductDTO(x));
         } else {
             Page<Product> list = repository.findAll(pageable);
@@ -121,7 +146,7 @@ public class ProductService {
         try {
             Product entity = repository.findById(id)
                     .orElseThrow(()-> new ResourceNotFoundException("Id not found " + id));
-            updateDtoToEntity(dto, entity);
+            copyDtoToEntity(dto, entity);
             entity.setUpdatedAt(Instant.now());
             entity = repository.save(entity);
             salvarAuditoria("Produto Atualizado " + entity.getName());
@@ -148,12 +173,17 @@ public class ProductService {
     private void copyDtoToEntity(ProductDTO dto, Product entity) {
         entity.setCode(dto.getCode());
         entity.setName(dto.getName());
+        entity.setDescriptionCommercialResume(dto.getDescriptionCommercialResume());
         entity.setDescriptionCommercial(dto.getDescriptionCommercial());
+        entity.setDescriptionCharacteristicsCommercial(dto.getDescriptionCharacteristicsCommercial());
+        entity.setApplicationCommercial(dto.getApplicationCommercial());
+        entity.setEpilogueCommercial(dto.getEpilogueCommercial());
         entity.setDescriptionInstalesoft(dto.getDescriptionInstalesoft());
         entity.setWeight(dto.getWeight());
         entity.setLength(dto.getLength());
         entity.setWidth(dto.getWidth());
         entity.setHeight(dto.getHeight());
+        entity.setCapaImagem(dto.getCapaImagem());
         entity.setImgUrl1(dto.getImgUrl1());
         entity.setImgUrl2(dto.getImgUrl2());
         entity.setImgUrl3(dto.getImgUrl3());
@@ -161,6 +191,7 @@ public class ProductService {
         entity.setImgUrl5(dto.getImgUrl5());
         entity.setUrlLogoImg(dto.getUrlLogoImg());
         entity.setUrlManual(dto.getUrlManual());
+        entity.setZip(dto.getZip());
         entity.setCreatedAt(dto.getCreatedAt());
         entity.setUpdatedAt(dto.getUpdatedAt());
         entity.setActive(dto.getActive());
@@ -173,31 +204,7 @@ public class ProductService {
 
     }
 
-    private void updateDtoToEntity(ProductDTO dto, Product entity) {
-        entity.setCode(dto.getCode());
-        entity.setName(dto.getName());
-        entity.setDescriptionCommercial(dto.getDescriptionCommercial());
-        entity.setDescriptionInstalesoft(dto.getDescriptionInstalesoft());
-        entity.setWeight(dto.getWeight());
-        entity.setLength(dto.getLength());
-        entity.setWidth(dto.getWidth());
-        entity.setHeight(dto.getHeight());
-        entity.setImgUrl1(dto.getImgUrl1());
-        entity.setImgUrl2(dto.getImgUrl2());
-        entity.setImgUrl3(dto.getImgUrl3());
-        entity.setImgUrl4(dto.getImgUrl4());
-        entity.setImgUrl5(dto.getImgUrl5());
-        entity.setUrlLogoImg(dto.getUrlLogoImg());
-        entity.setUrlManual(dto.getUrlManual());
-        entity.setUpdatedAt(dto.getUpdatedAt());
-        entity.setActive(dto.getActive());
 
-        if (dto.getCategoryCommercialId()!= null) {
-            CategoryProductCommercial categoryProductCommercial = categoryProductCommercialRepository.findById(dto.getCategoryCommercialId())
-                    .orElseThrow(()-> new ResourceNotFoundException("Categoria Comercial não encontrada"));
-            entity.setCategoryProductCommercial(categoryProductCommercial);
-        }
-    }
 
     private void salvarAuditoria(String objeto) {
         // Obtendo usuário autenticado

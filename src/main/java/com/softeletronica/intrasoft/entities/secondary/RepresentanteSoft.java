@@ -12,12 +12,15 @@ public class RepresentanteSoft {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String representante;
+    @Column(name = "estados_representantes")
     private String estadosRepresentantes;
     private String whatsapp;
     private String phone1;
     private String phone2;
     private String phone3;
+    @Column(name = "create_at")
     private Instant createAt;
+    @Column(name = "update_at")
     private Instant updateAt;
     private String contato;
     private String email;

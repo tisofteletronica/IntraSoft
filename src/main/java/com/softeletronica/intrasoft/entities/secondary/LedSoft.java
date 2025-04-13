@@ -20,16 +20,27 @@ public class LedSoft {
     private String aplicacoes;
     @Column(columnDefinition = "TEXT")
     private String conclusao;
+    @Column(name = "url_img")
     private String urlImg;
+    @Column(name = "url_img_2")
     private String urlImg_2;
+    @Column(name = "url_img_3")
     private String urlImg_3;
+    @Column(name = "url_img_4")
     private String urlImg_4;
+    @Column(name = "url_img_5")
     private String urlImg_5;
+    @Column(name = "url_img_6")
     private String urlImg_6;
+    @Column(name = "img_site_led_1")
     private String imgSiteLed_1;
+    @Column(name = "img_site_led_2")
     private String imgSiteLed_2;
+    @Column(name = "img_site_led_3")
     private String imgSiteLed_3;
+    @Column(name = "img_site_led_4")
     private String imgSiteLed_4;
+    @Column(name = "img_site_led_5")
     private String imgSiteLed_5;
 
 

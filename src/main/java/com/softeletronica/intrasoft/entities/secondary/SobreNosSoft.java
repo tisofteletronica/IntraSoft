@@ -13,16 +13,19 @@ public class SobreNosSoft {
     @Column(columnDefinition = "TEXT")
     private String historico;
     private String politica;
+    @Column(name = "politica_ambiental")
+    private String politicaAmbiental;
 
 
     public SobreNosSoft() {
 
     }
 
-    public SobreNosSoft(Long id, String historico, String politica) {
+    public SobreNosSoft(Long id, String historico, String politica, String politicaAmbiental) {
         this.id = id;
         this.historico = historico;
         this.politica = politica;
+        this.politicaAmbiental = politicaAmbiental;
     }
 
     public Long getId() {
@@ -47,6 +50,14 @@ public class SobreNosSoft {
 
     public void setPolitica(String politica) {
         this.politica = politica;
+    }
+
+    public String getPoliticaAmbiental() {
+        return politicaAmbiental;
+    }
+
+    public void setPoliticaAmbiental(String politicaAmbiental) {
+        this.politicaAmbiental = politicaAmbiental;
     }
 
     @Override

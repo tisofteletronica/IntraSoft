@@ -13,9 +13,11 @@ public class MontagemSoftDiferenciais {
     private String diferencial;
     @Column(columnDefinition = "TEXT")
     private String descricao;
-
+    @Column(name = "url_img1")
     private String urlImg1;
+    @Column(name = "url_img2")
     private String urlImg2;
+    @Column(name = "url_img3")
     private String urlImg3;
 
     public MontagemSoftDiferenciais(){
