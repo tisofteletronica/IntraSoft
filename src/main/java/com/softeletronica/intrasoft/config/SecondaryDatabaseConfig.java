@@ -31,7 +31,7 @@ public class SecondaryDatabaseConfig {
     @Bean(name = "secondaryDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.secondary")
     public DataSource primaryDataSource() {
-        DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();dataSourceBuilder.url("jdbc:10.100.60.112:5432/basesoft");
+        DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();dataSourceBuilder.url("jdbc:postgresql://10.100.60.112:5432/basesoft");
         dataSourceBuilder.username("webadmin");
         dataSourceBuilder.password("QTXcip37126");
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
