@@ -29,6 +29,15 @@ public class ProductCommercialMontadoraController {
         return ResponseEntity.ok().body(list);
     }
 
+    @GetMapping(value = "/product")
+    public ResponseEntity<Page<ProductCommercialMontadoraDTO>> findProd(
+            @RequestParam(value = "product", defaultValue = "0") Long productId,
+            Pageable pageable) {
+
+        Page<ProductCommercialMontadoraDTO> list = productCommercialMontadoraService.findProduct(productId,pageable);
+        return ResponseEntity.ok().body(list);
+    }
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<ProductCommercialMontadoraDTO> findById(@PathVariable Long id) {
         ProductCommercialMontadoraDTO dto = productCommercialMontadoraService.findById(id);

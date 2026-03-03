@@ -20,14 +20,14 @@ public class DepartmentController {
     @Autowired
     private DepartmentService service;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
+   // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
     @GetMapping
     public ResponseEntity<Page<DepartmentDTO>> findAll(Pageable pageable) {
         Page<DepartmentDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
+   // @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
     @GetMapping(value = "/{id}")
     public ResponseEntity<DepartmentDTO> findById(@PathVariable Long id) {
         DepartmentDTO dto = service.findById(id);

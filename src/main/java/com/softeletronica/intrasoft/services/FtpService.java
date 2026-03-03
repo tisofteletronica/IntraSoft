@@ -1,6 +1,7 @@
 package com.softeletronica.intrasoft.services;
 
 
+import org.apache.commons.net.ftp.FTPFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.apache.commons.net.ftp.FTP;
@@ -34,8 +35,8 @@ public class FtpService {
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
-            // Caminho completo, sem criar diretórios
-            String remoteDir = baseDirectory + "/" + folder;
+            // Caminho completo
+            String remoteDir = baseDirectory + folder;
 
             // Verificar se estamos no diretório correto
             boolean directoryChanged = ftpClient.changeWorkingDirectory(remoteDir);
@@ -43,13 +44,22 @@ public class FtpService {
                 throw new IOException("Falha ao acessar o diretório no servidor: " + remoteDir);
             }
 
-            // Nome do arquivo - evitar conflitos com timestamp
-            String remoteFileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+            // Extrai o nome original removendo timestamps no padrão "1234567890_"
+            String originalFilename = file.getOriginalFilename();
+            String remoteFileName = originalFilename.replaceAll("^\\d+_", "");
 
-            // Realiza o upload do arquivo
+            // Verificar e deletar arquivo existente
+            FTPFile[] existingFiles = ftpClient.listFiles(remoteFileName);
+            if (existingFiles.length > 0) {
+                boolean deleted = ftpClient.deleteFile(remoteFileName);
+                if (!deleted) {
+                    throw new IOException("Falha ao deletar arquivo existente: " + remoteFileName);
+                }
+            }
+
+            // Realiza o upload
             boolean done = ftpClient.storeFile(remoteFileName, inputStream);
             ftpClient.logout();
-
 
             if (done) {
                 return "ftp://" + ftpHost + remoteDir + "/" + remoteFileName;
@@ -57,10 +67,11 @@ public class FtpService {
                 throw new IOException("Falha ao fazer upload do arquivo.");
             }
         } finally {
-            ftpClient.disconnect();
+            if (ftpClient.isConnected()) {
+                ftpClient.disconnect();
+            }
         }
     }
-
 
     /**
      * Verifica e cria diretório se não existir

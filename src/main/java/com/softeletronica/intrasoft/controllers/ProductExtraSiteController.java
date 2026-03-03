@@ -44,7 +44,7 @@ public class ProductExtraSiteController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_SITE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @PostMapping(value = "/add")
     public ResponseEntity<ProductExtraSiteDTO> insert(@Valid @RequestBody ProductExtraSiteDTO dto) {
         dto = service.insert(dto);
@@ -52,7 +52,7 @@ public class ProductExtraSiteController {
         return ResponseEntity.created(uri).body(dto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_SITE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @PutMapping(value = "/update/{id}")
 
     public ResponseEntity<ProductExtraSiteDTO> update(@PathVariable Long id, @Valid @RequestBody
@@ -61,7 +61,7 @@ public class ProductExtraSiteController {
         return ResponseEntity.ok().body(newDto);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') and hasRole('ROLE_TI') and hasRole('ROLE_SITE')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI') or hasRole('ROLE_SITE')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);

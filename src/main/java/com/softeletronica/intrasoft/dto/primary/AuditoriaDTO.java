@@ -22,9 +22,9 @@ public class AuditoriaDTO {
 
     public AuditoriaDTO(Auditoria entities) {
         id = entities.getId();
-        created = getCreated();
-        objeto = getObjeto();
-        usuario = getUsuario();
+        created = entities.getCreated();
+        objeto = entities.getObjeto();
+        usuario = entities.getUsuario();
     }
 
     public Long getId() {

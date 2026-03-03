@@ -9,6 +9,7 @@ import com.softeletronica.intrasoft.entities.primary.Auditoria;
 import com.softeletronica.intrasoft.entities.primary.Department;
 import com.softeletronica.intrasoft.entities.primary.Role;
 import com.softeletronica.intrasoft.entities.primary.User;
+import com.softeletronica.intrasoft.entities.secondary.RepresentanteSoft;
 import com.softeletronica.intrasoft.projections.UserDetailsProjection;
 import com.softeletronica.intrasoft.repositories.primary.AuditoriaRepository;
 import com.softeletronica.intrasoft.repositories.primary.DepartmentRepository;
@@ -94,6 +95,19 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional(readOnly = true)
+    public Page<UserDTO> findEmail(String email, Pageable pageable) {
+        Page<User> list = repository.searchByEmail(email, pageable);
+        return list.map(x -> new UserDTO(x) {
+        });
+    }
+
+    @Transactional(readOnly = true)
+    public Page<UserDTO> findByEmailAndActive(String email, Boolean active, Pageable pageable) {
+        Page<User> list = repository.searchByEmailAndActive(email, active, pageable);
+        return list.map(x -> new UserDTO(x));
+    }
+
+    @Transactional(readOnly = true)
     public UserDTO findById(Long id) {
         Optional<User> obj = repository.findById(id);
         User entity = obj.orElseThrow(() -> new ResourceNotFoundException("Entity not found"));
@@ -104,18 +118,30 @@ public class UserService implements UserDetailsService {
     public UserDTO insert(UserInsertDTO dto) {
         User entity = new User();
         copyDtoToEntity(dto, entity);
+        entity.setCreated(Instant.now());
+        entity.setUpdated(Instant.now());
         entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = repository.save(entity);
         salvarAuditoria("Usuario Adicionado " + entity.getUsername());
         return new UserDTO(entity);
     }
 
-    @Transactional
     public UserDTO update(Long id, UserUpdateDTO dto) {
         try {
-            User entity = repository.getOne(id);
+            User entity = repository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Id not found " + id));
+
+            // Atualiza a senha apenas se foi fornecida no DTO
+            if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+                entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+            }
+
+
             copyDtoToEntity(dto, entity);
-            entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+
+
+            entity.setUpdated(Instant.now());
             entity = repository.save(entity);
             salvarAuditoria("Usuario Atualizado " + entity.getUsername());
             return new UserDTO(entity);

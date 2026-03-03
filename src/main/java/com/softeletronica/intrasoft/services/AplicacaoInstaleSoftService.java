@@ -143,7 +143,7 @@ public class AplicacaoInstaleSoftService {
         entity = repository.save(entity);
         // Criando registro de auditoria
         salvarAuditoria("InstaleSoft Id " + entity.getId() +
-                        "InstaleSoft Modelo Adicionado " + entity.getModeloInstalesoft().getName());
+                        " InstaleSoft Modelo Adicionado " + entity.getModeloInstalesoft().getName());
 
         return new AplicacaoInstaleSoftInsertDTO(entity);
     }
@@ -157,7 +157,7 @@ public class AplicacaoInstaleSoftService {
             entity = repository.save(entity);
             // Criando registro de auditoria
             salvarAuditoria("InstaleSoft Id " + entity.getId() +
-                    "InstaleSoft Modelo Atualizado " + entity.getModeloInstalesoft().getName());
+                    " InstaleSoft Modelo Atualizado " + entity.getModeloInstalesoft().getName());
             return new AplicacaoInstaleSoftInsertDTO(entity);
         } catch (EntityNotFoundException e) {
             throw new ResourceNotFoundException("Id not found " + id);

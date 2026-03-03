@@ -4,6 +4,7 @@ package com.softeletronica.intrasoft.controllers;
 import com.softeletronica.intrasoft.dto.primary.UserDTO;
 import com.softeletronica.intrasoft.dto.primary.UserInsertDTO;
 import com.softeletronica.intrasoft.dto.primary.UserUpdateDTO;
+import com.softeletronica.intrasoft.entities.primary.User;
 import com.softeletronica.intrasoft.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -22,29 +23,37 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping
     public ResponseEntity<Page<UserDTO>> findAll(Pageable pageable) {
         Page<UserDTO> list = service.findAllPaged(pageable);
         return ResponseEntity.ok().body(list);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping(value = "/email")
+    public ResponseEntity<Page<UserDTO>> email(
+            @RequestParam(value = "email", defaultValue = "") String email,
+            @RequestParam(value = "active", required = false) Boolean active,
+            Pageable pageable) {
+        Page<UserDTO> list = service.findByEmailAndActive(email, active, pageable);
+        return ResponseEntity.ok().body(list);
+    }
+
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable Long id) {
         UserDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR' ,'ROLE_TI')")
+    @PreAuthorize("hasRole('ROLE_OPERATOR')")
     @GetMapping(value = "/me")
     public ResponseEntity<UserDTO> getMe() {
         UserDTO dto = service.getMe();
         return ResponseEntity.ok(dto);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
-    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI')")
+    @PostMapping(value = "/add")
     public ResponseEntity<UserDTO> insert(@RequestBody UserInsertDTO dto) {
         UserDTO newDto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newDto.getId()).toUri();
@@ -52,8 +61,9 @@ public class UserController {
 
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_TI')")
-    @PutMapping(value = "/{id}")
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_TI')")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserUpdateDTO dto) {
         UserDTO newDto = service.update(id, dto);
         return ResponseEntity.ok().body(newDto);

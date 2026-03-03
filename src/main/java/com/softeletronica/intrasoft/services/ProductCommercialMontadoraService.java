@@ -47,6 +47,12 @@ public class ProductCommercialMontadoraService {
         return list.map(x -> new ProductCommercialMontadoraDTO(x.getProductcommercial(), x));
     }
 
+    @Transactional(readOnly = true)
+    public Page<ProductCommercialMontadoraDTO> findProduct(Long productId, Pageable pageable) {
+        Page<ProductCommercialMontadora> list = productCommercialMontadoraRepository.filterProduct(productId, pageable);
+        return list.map(x -> new ProductCommercialMontadoraDTO(x.getProductcommercial(), x));
+    }
+
 
     @Transactional(readOnly = true)
     public ProductCommercialMontadoraDTO findById(Long id) {
