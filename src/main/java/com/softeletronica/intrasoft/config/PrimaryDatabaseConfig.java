@@ -38,8 +38,8 @@ public class PrimaryDatabaseConfig {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
         dataSourceBuilder.url("jdbc:postgresql://10.100.60.112:5432/intrasoft");
         /*dataSourceBuilder.url("jdbc:postgresql://10.32.3.11:5432/intrasoft");*/
-        dataSourceBuilder.username("postgres");
-        dataSourceBuilder.password("1234567");
+        dataSourceBuilder.username("webadmin");
+        dataSourceBuilder.password("QTXcip37126");
         dataSourceBuilder.driverClassName("org.postgresql.Driver");
         return dataSourceBuilder.build();
     }
