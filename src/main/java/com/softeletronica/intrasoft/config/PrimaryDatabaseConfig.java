@@ -36,7 +36,7 @@ public class PrimaryDatabaseConfig {
     @ConfigurationProperties(prefix = "spring.datasource.primary")
     public DataSource primaryDataSource() {
         DataSourceBuilder<?> dataSourceBuilder = DataSourceBuilder.create();
-        dataSourceBuilder.url("jdbc:postgresql://177.19.236.168:12546/intrasoft");
+        dataSourceBuilder.url("jdbc:postgresql://10.100.60.112:5432/intrasoft");
         /*dataSourceBuilder.url("jdbc:postgresql://10.32.3.11:5432/intrasoft");*/
         dataSourceBuilder.username("postgres");
         dataSourceBuilder.password("1234567");
